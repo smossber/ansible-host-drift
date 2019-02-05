@@ -1,0 +1,5 @@
+Netid  State      Recv-Q Send-Q Local Address:Port               Peer Address:Port              
+tcp    LISTEN     0      128       *:22                    *:*                   users:(("sshd",pid=3285,fd=3))
+tcp    LISTEN     0      100    127.0.0.1:25                    *:*                   users:(("master",pid=3718,fd=13))
+tcp    LISTEN     0      128      :::22                   :::*                   users:(("sshd",pid=3285,fd=4))
+tcp    LISTEN     0      100     ::1:25                   :::*                   users:(("master",pid=3718,fd=14))
