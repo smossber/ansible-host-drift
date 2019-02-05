@@ -4,14 +4,35 @@
   - import_role:
       role: drift
 
-  - name: check in changes
+  - name: stage changes
     command: git add hostcheck
     args:
       chdir: "{{ playbook_dir }}"
     delegate_to: localhost
+    register: git_add
+    become: false
+    changed_when: 
 
+
+  # Both commit and push might run when there are no changes commited
+  # This could probably be handled nicer, but works for now
   - name: commit changes
-    command: git add hostcheck
+    command: "git commit -m 'changes @ {{ ansible_date_time.date }} {{ansible_date_time.time }}'"
     args:
       chdir: "{{ playbook_dir }}"
     delegate_to: localhost
+    become: false
+    run_once: true
+    failed_when: false
+    changed_when: false
+
+  - name: push changes
+    command: "git push origin master"
+    args:
+      chdir: "{{ playbook_dir }}"
+    delegate_to: localhost
+    become: false
+    run_once: true
+    failed_when: false
+    changed_when: false
+
