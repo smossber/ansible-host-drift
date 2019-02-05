@@ -4,6 +4,14 @@
   - import_role:
       role: drift
 
+  - name: timestamp log
+    command: "mv ansible.log run-{{ ansible_date_time.date }}-{{ansible_date_time.time }}.log"
+    args:
+      chdir: "{{ playbook_dir }}/logs"
+    become: false
+    delegate_to: localhost
+    run_once: true
+
   - name: stage changes
     command: git add hostcheck
     args:
