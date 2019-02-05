@@ -1,0 +1,24 @@
+# Here we check for ACTIVLY listening ports
+
+- name: run netstat -tulpn
+  command: netstat -tulpn
+  register: netstat
+  changed_when: false
+  when: ansible_distribution_major_version == '6'
+
+- name: run ss -tulpn
+  command: ss -tulpn
+  register: netstat
+  changed_when: false
+  when: ansible_distribution_major_version == '7'
+
+- debug:
+    msg: "ansible_distribution_major_version = {{ ansible_distribution_major_version }}"
+
+- name: write to file
+  copy:
+    content: "{{ netstat.stdout }}"
+    dest: "{{ local_host_directory }}/netstat"
+  delegate_to: localhost
+  become: false
+

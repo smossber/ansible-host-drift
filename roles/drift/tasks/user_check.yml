@@ -1,0 +1,15 @@
+
+# changed_when: false because we are executing command
+# we want to reserve the changed event for file changes for better detection
+- name: print users
+  command: cat /etc/passwd
+  register: etc_passwd
+  changed_when: false
+
+# copy is idempotent
+- name: write /etc/passwd to file 
+  copy: 
+    content: "{{ etc_passwd.stdout }}"
+    dest: "{{ local_host_directory }}/passwd"
+  delegate_to: localhost
+  become: false

@@ -1,0 +1,22 @@
+---
+
+- name: set directory
+  set_fact:
+    local_host_directory: "{{ playbook_dir }}/hostcheck/{{ inventory_hostname }}" 
+
+- name: create directory for host {{ inventory_hostname }}
+  file: 
+    path: "{{ local_host_directory }}"
+    state: directory
+  delegate_to: localhost
+  become: false
+
+
+- name: check on users
+  import_tasks: user_check.yml
+
+- name: check JAVA version
+  import_tasks: java_version.yml
+
+- name: check active listening ports
+  import_tasks: listening_ports.yml

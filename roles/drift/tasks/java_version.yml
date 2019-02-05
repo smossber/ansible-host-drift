@@ -1,0 +1,39 @@
+# changed_when: false because we are executing command
+# we want to reserve the changed event for file changes for better detection
+- name: check if java is available
+  command: which java
+  register: java_avail
+  ignore_errors: true
+  changed_when: false
+  failed_when: false
+
+# touch always reports changed, therefor we disable it
+- name: create java-version
+  file:
+    state: touch
+    path: "{{ local_host_directory }}/java-version"
+  delegate_to: localhost
+  become: false
+  changed_when: false
+
+
+- block:
+  - name: check java version
+    command: java --version
+    register: java_version
+    changed_when: false
+  
+  - name: write to file java-version
+    copy: 
+      content: "{{ java_version.stdout }}"
+      dest: "{{ local_host_directory }}/java-version"
+    delegate_to: localhost
+    become: false
+  when: java_avail.rc == 0
+
+- name: write to file java-version
+  lineinfile:
+    line: "{{ java_avail.stderr }}"
+    path: "{{ local_host_directory }}/java-version"
+  delegate_to: localhost
+  become: false

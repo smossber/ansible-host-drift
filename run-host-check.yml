@@ -1,0 +1,17 @@
+- hosts: host1,host2
+  become: true
+  tasks:
+  - import_role:
+      role: drift
+
+  - name: check in changes
+    command: git add hostcheck
+    args:
+      chdir: "{{ playbook_dir }}"
+    delegate_to: localhost
+
+  - name: commit changes
+    command: git add hostcheck
+    args:
+      chdir: "{{ playbook_dir }}"
+    delegate_to: localhost
