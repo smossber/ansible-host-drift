@@ -7,14 +7,14 @@
   changed_when: false
   failed_when: false
 
-# touch always reports changed, therefor we disable it
-- name: create java-version
-  file:
-    state: touch
-    path: "{{ local_host_directory }}/java-version"
-  delegate_to: localhost
-  become: false
-  changed_when: false
+# touch always reports changed, therefor we disable changes here
+#- name: create java-version
+#  file:
+#    state: touch
+#    path: "{{ local_host_directory }}/java-version"
+#  delegate_to: localhost
+#  become: false
+#  changed_when: false
 
 
 - block:
@@ -24,16 +24,15 @@
     changed_when: false
   
   - name: write to file java-version
-    copy: 
-      content: "{{ java_version.stdout }}"
-      dest: "{{ local_host_directory }}/java-version"
-    delegate_to: localhost
-    become: false
+    include_tasks: write-to-file.yml
+    vars:
+      file_name: java-version
+      file_content: "{{ java_version.stdout }}"
   when: java_avail.rc == 0
 
 - name: write to file java-version
-  lineinfile:
-    line: "{{ java_avail.stderr }}"
-    path: "{{ local_host_directory }}/java-version"
-  delegate_to: localhost
-  become: false
+  include_tasks: write-to-file.yml
+  vars:
+    file_name: java-version
+    file_content: "{{ java_avail.stderr }}"
+  when: java_avail.rc != 0

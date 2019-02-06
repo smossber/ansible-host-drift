@@ -1,0 +1,9 @@
+# This is the var we use to decide if any changes have been made
+# and if we will perform a git checkin and if we will add the playbook log.
+# 
+# The var is changed by the write-to-file.yml task list.
+# If it detects a change with the copy: module 
+# it will set changes: to true
+#
+# At the end of the playbook, this var is checked.
+changes: false

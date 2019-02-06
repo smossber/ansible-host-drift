@@ -1,4 +1,4 @@
 Drift
 =====
 
-Experimential role of 
+Experimential role of detecting changes

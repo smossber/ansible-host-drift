@@ -1,0 +1,23 @@
+# Use this task list as a function
+# expects two vars:
+# - file_name
+# - file_content 
+#
+# - name:
+#   include_tasks: write-to-file.yml
+#   vars:
+#     file_name: passwd
+#     file_content: "\{{ results.stdout \}}"
+
+- name: "write to file {{ file_name }}"
+  copy: 
+    content: "{{ file_content }}"
+    dest: "{{ local_host_directory }}/{{ file_name }}"
+  delegate_to: localhost
+  become: false
+  register: file_write
+
+- name: update change
+  set_fact:
+    changes: true
+  when: file_write.changed
