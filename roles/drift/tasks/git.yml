@@ -1,5 +1,5 @@
  - name: stage changes
-   command: git add hostcheck 
+   command: git add .
    args:
      chdir: "{{ git_repo_path }}"
    delegate_to: localhost
