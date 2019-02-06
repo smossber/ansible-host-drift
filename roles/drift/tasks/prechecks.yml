@@ -2,4 +2,19 @@
     that:
       - 'git_repo_path is defined'
     msg: "Have to define git_repo_path in your vars."
+  run_once: true
+
+- name: "check if {{ git_repo_path }} is a git repo"
+  stat:
+    path: "{{ git_repo_path }}/.git"
+  register: git_stat
+  delegate_to: localhost
+  run_once: true
+  become: false
+
+- assert:
+    that:
+      - 'git_stat.stat.exists'
+    msg: "{{ git_repo_path }} does not seem to be a valid Git repo"
+  run_once: true
 
