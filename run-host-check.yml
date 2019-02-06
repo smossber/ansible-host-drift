@@ -1,5 +1,7 @@
 - hosts: host1,host2
   become: true
+  vars:
+    git_repo_path: /path/to/my/other/git/repo
   tasks:
   - import_role:
       role: drift
