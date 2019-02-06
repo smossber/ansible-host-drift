@@ -1,0 +1,5 @@
+- assert:
+    that:
+      - 'git_repo_path is defined'
+    msg: "Have to define git_repo_path in your vars."
+

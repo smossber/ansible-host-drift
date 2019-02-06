@@ -1,8 +1,10 @@
 ---
+- name: do some prechecks
+  import_tasks: prechecks.yml
 
 - name: set directory
   set_fact:
-    local_host_directory: "{{ playbook_dir }}/hostcheck/{{ inventory_hostname }}" 
+    local_host_directory: "{{ git_repo_path }}/{{ inventory_hostname }}" 
 
 - name: create directory for host {{ inventory_hostname }}
   file: 
@@ -20,3 +22,18 @@
 
 - name: check active listening ports
   import_tasks: listening_ports.yml
+
+
+
+
+
+- name: timestamp log
+  command: "mv ansible.log run-{{ ansible_date_time.date }}-{{ansible_date_time.time }}.log"
+  args:
+    chdir: "{{ playbook_dir }}/logs"
+  become: false
+  delegate_to: localhost
+  run_once: true
+  changed_when: false
+
+- import_tasks: git.yml
