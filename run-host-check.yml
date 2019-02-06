@@ -19,7 +19,7 @@
   # run git if anything has changed
   - block:
     - name: stage changes
-      command: git add hostcheck logs/run-{{ ansible_date_time.date }}-{{ansible_date_time.time }}.log
+      command: git add hostcheck 
       args:
         chdir: "{{ playbook_dir }}"
       delegate_to: localhost
@@ -48,5 +48,4 @@
       run_once: true
       failed_when: false
       changed_when: false
-    when: changes
   
